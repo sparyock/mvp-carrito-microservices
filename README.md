@@ -20,6 +20,8 @@ El sistema permite:
 - Generar facturas
 - Visualizar información desde un frontend web
 
+Cada microservicio implementa un **CRUD completo** (Crear, Leer, Actualizar, Eliminar) sobre sus respectivas entidades, permitiendo la gestión total de los datos desde el frontend y la API.
+
 ---
 
 ## 🏗️ Arquitectura del Sistema
@@ -69,11 +71,15 @@ Users Service  Products Service  Sales Service
 
 **Base de datos:** `usersdb`
 
-**Endpoints:**
-```
-GET  /users
-POST /users
-```
+**CRUD completo de usuarios:**
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | /users | Listar todos los usuarios |
+| GET | /users/{id} | Obtener usuario por ID |
+| POST | /users | Crear nuevo usuario |
+| PUT | /users/{id} | Actualizar usuario existente |
+| DELETE | /users/{id} | Eliminar usuario |
 
 ---
 
@@ -87,11 +93,15 @@ POST /users
 
 **Base de datos:** `productsdb`
 
-**Endpoints:**
-```
-GET  /products
-POST /products
-```
+**CRUD completo de productos:**
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | /products | Listar todos los productos |
+| GET | /products/{id} | Obtener producto por ID |
+| POST | /products | Crear nuevo producto |
+| PUT | /products/{id} | Actualizar producto existente |
+| DELETE | /products/{id} | Eliminar producto |
 
 ---
 
@@ -114,13 +124,20 @@ facturas
 detalle_factura
 ```
 
-**Endpoints principales:**
-```
-POST /sales/cart
-POST /sales/cart/{id}/items
-GET  /sales/cart/{id}
-POST /sales/invoice/{id}
-```
+**CRUD completo de ventas:**
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | /sales/cart | Listar todos los carritos |
+| GET | /sales/cart/{id} | Obtener carrito por ID |
+| POST | /sales/cart | Crear nuevo carrito |
+| POST | /sales/cart/{id}/items | Agregar producto al carrito |
+| PUT | /sales/cart/{id} | Actualizar carrito |
+| DELETE | /sales/cart/{id} | Eliminar carrito |
+| GET | /sales/invoice | Listar facturas |
+| GET | /sales/invoice/{id} | Obtener factura por ID |
+| POST | /sales/invoice/{id} | Generar factura desde carrito |
+| DELETE | /sales/invoice/{id} | Eliminar factura |
 
 ---
 
@@ -130,12 +147,11 @@ POST /sales/invoice/{id}
 **Puerto:** `4200`
 
 **Funcionalidades:**
-- Crear usuarios
-- Crear productos
-- Crear carrito
-- Agregar productos
-- Generar factura
-- Visualización de datos
+- Crear, listar, actualizar y eliminar usuarios (CRUD completo)
+- Crear, listar, actualizar y eliminar productos (CRUD completo)
+- Crear carrito y gestionar items (CRUD completo)
+- Generar y visualizar facturas
+- Visualización de datos en tiempo real
 
 **Rutas del frontend:**
 ```
@@ -235,7 +251,7 @@ http://localhost:4200
 1. El usuario accede al frontend
 2. El frontend envía solicitudes al API Gateway
 3. El Gateway redirige al microservicio correspondiente
-4. El microservicio procesa la solicitud
+4. El microservicio procesa la solicitud (Create, Read, Update o Delete)
 5. Se guarda la información en PostgreSQL
 6. Se devuelve la respuesta al frontend
 
@@ -244,9 +260,9 @@ http://localhost:4200
 ## 📸 Evidencias sugeridas
 
 Agregar capturas de:
-- Usuarios creados
-- Productos creados
-- Carrito creado
+- Usuarios creados, editados y eliminados
+- Productos creados, editados y eliminados
+- Carrito creado con items
 - Factura generada
 - Tablas en PostgreSQL
 - Frontend funcionando
@@ -270,3 +286,4 @@ Proyecto académico — **Sistemas Distribuidos**
 | Frontend       | ✅ Completo  |
 | Integración    | ✅ Funcional |
 | Base de datos  | ✅ Operativa |
+| CRUD completo  | ✅ Implementado |
