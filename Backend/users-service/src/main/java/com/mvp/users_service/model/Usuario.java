@@ -1,5 +1,6 @@
 package com.mvp.users_service.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +13,8 @@ public class Usuario {
 
     private String nombre;
     private String correo;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     public Usuario() {
