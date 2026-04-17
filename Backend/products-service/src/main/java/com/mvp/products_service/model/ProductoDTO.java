@@ -1,26 +1,30 @@
 package com.mvp.products_service.model;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
-@Entity
-@Table(name = "productos")
-public class Producto {
+public class ProductoDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @NotBlank(message = "El nombre no puede estar vacío")
+    @Size(min = 2, max = 100, message = "El nombre debe tener entre 2 y 100 caracteres")
     private String nombre;
+
+    @Size(max = 500, message = "La descripción no puede exceder 500 caracteres")
     private String descripcion;
+
+    @NotNull(message = "El precio es obligatorio")
+    @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
     private Double precio;
+
+    @NotNull(message = "El stock es obligatorio")
+    @Min(value = 0, message = "El stock no puede ser negativo")
     private Integer stock;
+
     private String imagenUrl;
 
-    public Producto() {
-    }
+    // Constructores
+    public ProductoDTO() {}
 
-    public Producto(Long id, String nombre, String descripcion, Double precio, Integer stock, String imagenUrl) {
-        this.id = id;
+    public ProductoDTO(String nombre, String descripcion, Double precio, Integer stock, String imagenUrl) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
@@ -28,10 +32,7 @@ public class Producto {
         this.imagenUrl = imagenUrl;
     }
 
-    public Long getId() {
-        return id;
-    }
-
+    // Getters y Setters
     public String getNombre() {
         return nombre;
     }
@@ -70,9 +71,5 @@ public class Producto {
 
     public void setImagenUrl(String imagenUrl) {
         this.imagenUrl = imagenUrl;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }
