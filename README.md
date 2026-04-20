@@ -1,4 +1,4 @@
-# Sistema de Microservicios — Gestión de Citas Inteligente / MVP Carrito de Compras
+# Sistema de Microservicios —  MVP Carrito de Compras
 
 ## Descripción General
 
