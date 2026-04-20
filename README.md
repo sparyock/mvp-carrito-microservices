@@ -1,591 +1,436 @@
-# 🛒 MVP Carrito Microservices
+# Sistema de Microservicios — Gestión de Citas Inteligente / MVP Carrito de Compras
 
-Sistema distribuido basado en arquitectura de microservicios para la gestión de usuarios, productos y ventas (carrito y facturación).
-El sistema utiliza un API Gateway como punto de entrada y un frontend moderno desarrollado en React con Tailwind CSS.
+## Descripción General
 
----
+Este proyecto corresponde a la implementación de una arquitectura basada en microservicios desarrollada como parte de la asignatura de Sistemas Distribuidos. El sistema simula un flujo completo de gestión de ventas mediante la interacción entre múltiples servicios independientes, cada uno responsable de una funcionalidad específica.
 
-## 📌 Descripción del Proyecto
-
-Este proyecto implementa un sistema de carrito de compras profesional utilizando microservicios independientes conectados mediante un API Gateway.
-
-Cada microservicio maneja su propia base de datos PostgreSQL y lógica de negocio, permitiendo escalabilidad, mantenimiento y despliegue independiente.
+El objetivo principal del proyecto es demostrar el funcionamiento de una arquitectura distribuida utilizando tecnologías modernas como Spring Boot, PostgreSQL, Docker y un API Gateway, permitiendo la comunicación entre servicios y la persistencia de datos en bases de datos independientes.
 
 El sistema permite:
 
-- ✅ Crear y autenticar usuarios
-- ✅ Registrar productos con imágenes profesionales
-- ✅ Crear carritos de compra
-- ✅ Agregar productos al carrito
-- ✅ Generar facturas automáticamente
-- ✅ Visualizar información desde un frontend web moderno
+- Registrar usuarios
+- Autenticar usuarios mediante login
+- Crear y gestionar productos
+- Administrar carritos de compra
+- Agregar productos al carrito
+- Reducir stock automáticamente
+- Generar facturas
+- Persistir información en bases de datos PostgreSQL
 
-Cada microservicio implementa un **CRUD completo** (Crear, Leer, Actualizar, Eliminar) sobre sus respectivas entidades.
-
----
-
-## 🏗️ Arquitectura del Sistema
-
-```
-Frontend (React + Tailwind CSS)
-        │
-        ▼
-API Gateway (Spring Cloud)
-        │
- ┌──────────────┬─────────────────┬──────────────┐
- ▼              ▼                 ▼
-Users Service  Products Service   Sales Service
-(mvp_users_db) (mvp_products_db)  (mvp_sales_db)
-```
+La arquitectura está diseñada siguiendo principios de desacoplamiento, escalabilidad y modularidad, permitiendo que cada microservicio funcione de manera independiente.
 
 ---
 
-## 🧩 Microservicios
+## Arquitectura del Sistema
 
-### 1️⃣ API Gateway
+El sistema está compuesto por los siguientes microservicios:
 
-**Puerto:** `8080`
+- API Gateway
+- Users Service
+- Products Service
+- Sales Service
+- PostgreSQL (base de datos independiente por servicio)
 
-**Responsabilidad:**
-- Punto de entrada al sistema
-- Redirección de solicitudes
-- Manejo de CORS para frontend
-- Comunicación entre frontend y microservicios
-
-**Rutas:**
-```
-/users/**
-/products/**
-/sales/**
-```
-
-### 2️⃣ Users Service
-
-**Puerto:** `8081`
-
-**Responsabilidad:**
-- Registro de usuarios
-- Autenticación de usuarios
-- Gestión de información de usuarios
-
-**Base de datos:** `mvp_users_db`
-
-**CRUD completo de usuarios:**
-
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| GET | /users | Listar todos los usuarios |
-| GET | /users/{id} | Obtener usuario por ID |
-| POST | /users | Crear nuevo usuario |
-| POST | /users/login | Autenticar usuario |
-| PUT | /users/{id} | Actualizar usuario existente |
-| DELETE | /users/{id} | Eliminar usuario |
-
-### 3️⃣ Products Service
-
-**Puerto:** `8082`
-
-**Responsabilidad:**
-- Registro de productos con imágenes
-- Gestión de inventario y stock
-- Reducción automática de stock en ventas
-
-**Base de datos:** `mvp_products_db`
-
-**CRUD completo de productos:**
-
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| GET | /products | Listar todos los productos |
-| GET | /products/{id} | Obtener producto por ID |
-| POST | /products | Crear nuevo producto |
-| PUT | /products/{id} | Actualizar producto existente |
-| PUT | /products/{id}/stock | Reducir stock |
-| DELETE | /products/{id} | Eliminar producto |
-
-### 4️⃣ Sales Service
-
-**Puerto:** `8083`
-
-**Responsabilidad:**
-- Creación de carritos de compra
-- Agregar/remover productos del carrito
-- Generación automática de facturas
-- Integración con products-service para reducción de stock
-
-**Base de datos:** `mvp_sales_db`
-
-**Tablas:**
-```
-carritos
-carrito_detalle
-facturas
-detalle_factura
-```
-
-**CRUD completo de ventas:**
-
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| GET | /sales/cart | Listar todos los carritos |
-| GET | /sales/cart/{id} | Obtener carrito por ID |
-| POST | /sales/cart | Crear nuevo carrito |
-| POST | /sales/cart/{id}/items | Agregar producto al carrito |
-| PUT | /sales/cart/{id}/items/{itemId} | Actualizar cantidad |
-| DELETE | /sales/cart/{id}/items/{itemId} | Remover producto |
-| DELETE | /sales/cart/{id} | Eliminar carrito |
-| GET | /sales/invoice | Listar facturas |
-| GET | /sales/invoice/{id} | Obtener factura por ID |
-| POST | /sales/checkout | Generar factura desde carrito |
-| DELETE | /sales/invoice/{id} | Eliminar factura |
+Cada microservicio tiene su propia base de datos y se comunica a través del API Gateway utilizando rutas HTTP.
 
 ---
 
-## 🎨 Frontend
+## Estructura del Proyecto
 
-**Tecnología:** React 18 + Vite + Tailwind CSS
-**Puerto:** `5173` (desarrollo) / `4173` (producción)
-
-**Funcionalidades:**
-- ✅ Autenticación completa (login/logout)
-- ✅ Gestión de usuarios (CRUD completo)
-- ✅ Catálogo de productos con imágenes profesionales
-- ✅ Carrito de compras interactivo
-- ✅ Checkout y generación de facturas
-- ✅ Interfaz moderna y responsive
-- ✅ Estado global con useReducer
-- ✅ Persistencia con localStorage
-
-**Componentes principales:**
-- `App.jsx` - Componente principal con estado global
-- `UserPanel.jsx` - Panel de login/registro
-- `ProductCard.jsx` - Tarjeta de producto con imagen
-- `CartDrawer.jsx` - Panel lateral del carrito
-- `ProductList.jsx` - Lista de productos
-- `InvoiceList.jsx` - Lista de facturas
-
----
-
-## 🗄️ Bases de Datos PostgreSQL
-
-Cada microservicio tiene su propia base de datos PostgreSQL:
-
-| Servicio | Base de Datos | Puerto | Usuario |
-|----------|---------------|--------|---------|
-| Users | `mvp_users_db` | `5432` | `postgres` |
-| Products | `mvp_products_db` | `5432` | `postgres` |
-| Sales | `mvp_sales_db` | `5432` | `postgres` |
-
-**Datos iniciales incluidos:**
-- ✅ Usuarios de prueba (eliminados - crear propios)
-- ✅ 8 productos profesionales con imágenes de Unsplash
-- ✅ Tablas completamente configuradas
+```
+mvp-carrito-microservices
+│
+├── api-gateway
+│
+├── users-service
+│   ├── controller
+│   ├── service
+│   ├── repository
+│   ├── model
+│   └── resources
+│
+├── products-service
+│   ├── controller
+│   ├── service
+│   ├── repository
+│   ├── model
+│   └── resources
+│
+├── sales-service
+│   ├── controller
+│   ├── service
+│   ├── repository
+│   ├── model
+│   └── resources
+│
+└── docker-compose.yml
+```
 
 ---
 
-## ⚙️ Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
-**Backend:**
+Backend:
+
 - Java 17
-- Spring Boot 3.x
-- Spring Cloud Gateway
-- Spring Data JPA/Hibernate
-- OpenFeign Client
-- PostgreSQL Driver
-- Maven
-- PostgreSQL 15
-
-**Frontend:**
-- React 18
-- Vite
-- Tailwind CSS
-- Axios
-- React Router
-- Lucide Icons
-
-**Herramientas:**
-- Visual Studio Code
-- pgAdmin 4
-- Postman
-- Git/GitHub
-
----
-
-## 🚀 Guía de Instalación y Ejecución
-
-### 📋 Prerrequisitos
-
-- Java 17 JDK
-- Node.js 18+
-- PostgreSQL 15+
-- Maven 3.8+
-- Git
-
-### 1. 📥 Clonar repositorio
-
-```bash
-git clone https://github.com/sparyock/mvp-carrito-microservices.git
-cd mvp-carrito-microservices
-```
-
-### 2. 🗄️ Configurar PostgreSQL
-
-Crear las bases de datos:
-
-```sql
--- Ejecutar en pgAdmin o psql
-CREATE DATABASE mvp_users_db;
-CREATE DATABASE mvp_products_db;
-CREATE DATABASE mvp_sales_db;
-```
-
-**Credenciales por defecto:**
-- Usuario: `postgres`
-- Contraseña: `yeison`
-- Puerto: `5432`
-
-### 3. ⚡ Iniciar Servicios (Método Rápido)
-
-**Windows:**
-```bash
-# Ejecutar script de inicio
-start-services.bat
-```
-
-**Linux/Mac:**
-```bash
-# Iniciar servicios manualmente en orden:
-cd Backend/users-service && ./mvnw spring-boot:run &
-cd Backend/products-service && ./mvnw spring-boot:run &
-cd Backend/sales-service && ./mvnw spring-boot:run &
-cd Backend/api-gateway && ./mvnw spring-boot:run &
-```
-
-### 4. 🎨 Iniciar Frontend
-
-```bash
-cd frontend-mvp
-npm install
-npm run dev
-```
-
-### 5. 🌐 Acceder al Sistema
-
-Abrir en el navegador:
-```
-http://localhost:5173
-```
-
----
-
-## 🔄 Flujo de Uso del Sistema
-
-1. **Registro/Login:** Crear cuenta o iniciar sesión
-2. **Explorar Productos:** Ver catálogo con imágenes profesionales
-3. **Agregar al Carrito:** Seleccionar productos y cantidades
-4. **Checkout:** Procesar compra y generar factura automáticamente
-5. **Gestión:** Ver historial de compras y facturas
-
----
-
-## 📸 Evidencias del Sistema
-
-### ✅ Funcionalidades Implementadas:
-- [x] Autenticación completa (login/logout)
-- [x] CRUD completo de usuarios
-- [x] CRUD completo de productos con imágenes
-- [x] Sistema de carrito de compras
-- [x] Generación automática de facturas
-- [x] Integración completa frontend-backend
-- [x] Bases de datos PostgreSQL separadas
-- [x] API Gateway con CORS configurado
-- [x] Frontend moderno con React + Tailwind
-- [x] Reducción automática de stock
-- [x] Manejo de errores y validaciones
-
-### 🖼️ Capturas Sugeridas:
-- Login y registro de usuarios
-- Catálogo de productos con imágenes
-- Carrito con productos agregados
-- Proceso de checkout
-- Factura generada
-- Tablas en PostgreSQL
-- Interfaz completa funcionando
-
----
-
-## 🛑 Detener Servicios
-
-**Windows:**
-```bash
-stop-services.bat
-```
-
-**Manual:**
-```bash
-# Cerrar procesos Java
-taskkill /f /im java.exe
-```
-
----
-
-## 👨‍💻 Autor
-
-**Proyecto Académico - Sistemas Distribuidos**
-
-**Estudiante:** Yeison Andres Scarpeta Diaz
-**Repositorio:** https://github.com/sparyock/mvp-carrito-microservices
-
----
-
-## 📊 Estado del Proyecto
-
-| Componente | Estado | Detalles |
-|------------|--------|----------|
-| Backend (4 microservicios) | ✅ Completo | Spring Boot + PostgreSQL |
-| Frontend React | ✅ Completo | Moderno con Tailwind CSS |
-| Integración API | ✅ Funcional | Axios + CORS configurado |
-| Bases de datos | ✅ Operativas | PostgreSQL con datos iniciales |
-| CRUD completo | ✅ Implementado | Todos los servicios |
-| Autenticación | ✅ Completa | Login/logout funcional |
-| Carrito de compras | ✅ Completo | Con reducción de stock |
-| Imágenes productos | ✅ Agregadas | URLs profesionales Unsplash |
-- Redirección de solicitudes
-- Manejo de CORS
-- Comunicación entre frontend y microservicios
-
-**Rutas:**
-```
-/users/**
-/products/**
-/sales/**
-```
-
----
-
-### 2️⃣ Users Service
-
-**Puerto:** `8081`
-
-**Responsabilidad:**
-- Registro de usuarios
-- Gestión de información de usuarios
-
-**Base de datos:** `usersdb`
-
-**CRUD completo de usuarios:**
-
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| GET | /users | Listar todos los usuarios |
-| GET | /users/{id} | Obtener usuario por ID |
-| POST | /users | Crear nuevo usuario |
-| PUT | /users/{id} | Actualizar usuario existente |
-| DELETE | /users/{id} | Eliminar usuario |
-
----
-
-### 3️⃣ Products Service
-
-**Puerto:** `8082`
-
-**Responsabilidad:**
-- Registro de productos
-- Gestión de inventario
-
-**Base de datos:** `productsdb`
-
-**CRUD completo de productos:**
-
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| GET | /products | Listar todos los productos |
-| GET | /products/{id} | Obtener producto por ID |
-| POST | /products | Crear nuevo producto |
-| PUT | /products/{id} | Actualizar producto existente |
-| DELETE | /products/{id} | Eliminar producto |
-
----
-
-### 4️⃣ Sales Service
-
-**Puerto:** `8083`
-
-**Responsabilidad:**
-- Creación de carritos
-- Agregar productos
-- Generación de facturas
-
-**Base de datos:** `salesdb`
-
-**Tablas:**
-```
-carritos
-carrito_detalle
-facturas
-detalle_factura
-```
-
-**CRUD completo de ventas:**
-
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| GET | /sales/cart | Listar todos los carritos |
-| GET | /sales/cart/{id} | Obtener carrito por ID |
-| POST | /sales/cart | Crear nuevo carrito |
-| POST | /sales/cart/{id}/items | Agregar producto al carrito |
-| PUT | /sales/cart/{id} | Actualizar carrito |
-| DELETE | /sales/cart/{id} | Eliminar carrito |
-| GET | /sales/invoice | Listar facturas |
-| GET | /sales/invoice/{id} | Obtener factura por ID |
-| POST | /sales/invoice/{id} | Generar factura desde carrito |
-| DELETE | /sales/invoice/{id} | Eliminar factura |
-
----
-
-## 🎨 Frontend
-
-**Tecnología:** Angular
-**Puerto:** `4200`
-
-**Funcionalidades:**
-- Crear, listar, actualizar y eliminar usuarios (CRUD completo)
-- Crear, listar, actualizar y eliminar productos (CRUD completo)
-- Crear carrito y gestionar items (CRUD completo)
-- Generar y visualizar facturas
-- Visualización de datos en tiempo real
-
-**Rutas del frontend:**
-```
-/inicio
-/usuarios
-/productos
-/ventas
-```
-
----
-
-## 🗄️ Bases de Datos
-
-Se utiliza **PostgreSQL**. Cada microservicio tiene su propia base de datos:
-
-```
-usersdb
-productsdb
-salesdb
-```
-
----
-
-## ⚙️ Tecnologías Utilizadas
-
-**Backend:**
-- Java 17
-- Spring Boot
-- Spring Cloud Gateway
+- Spring Boot 3
 - Spring Data JPA
+- Spring Web
 - Maven
-- PostgreSQL
 
-**Frontend:**
-- Angular
-- TypeScript
-- Bootstrap
-- HTML / CSS
+Base de datos:
 
-**Herramientas:**
+- PostgreSQL 16
+
+Infraestructura:
+
+- Docker
+- Docker Compose
+
+Herramientas de prueba:
+
 - Postman
-- Git / GitHub
-- Visual Studio Code
-- pgAdmin
+- pgAdmin 4
 
 ---
 
-## 🚀 Cómo ejecutar el proyecto
+## Puertos Utilizados
 
-### 1. Clonar repositorio
+| Servicio | Puerto |
+|----------|-------|
+| API Gateway | 8080 |
+| Users Service | 8081 |
+| Products Service | 8082 |
+| Sales Service | 8083 |
+| PostgreSQL | 5432 |
 
-```bash
-git clone https://github.com/sparyock/mvp-carrito-microservices.git
+---
+
+## Bases de Datos
+
+Cada microservicio utiliza su propia base de datos independiente.
+
+| Microservicio | Base de datos |
+|--------------|--------------|
+| Users Service | mvp_users_db |
+| Products Service | mvp_products_db |
+| Sales Service | mvp_sales_db |
+
+Esto permite mantener independencia entre servicios y evitar dependencias directas entre tablas de diferentes dominios.
+
+---
+
+## API Gateway
+
+El API Gateway actúa como punto de entrada único para todos los microservicios. Su función principal es enrutar las solicitudes hacia el servicio correspondiente.
+
+Ejemplo de rutas configuradas:
+
+```
+/users/**
+/products/**
+/sales/**
 ```
 
-### 2. Levantar bases de datos
+Ejemplo de configuración:
 
-Crear en PostgreSQL:
 ```
-usersdb
-productsdb
-salesdb
-```
-
-### 3. Ejecutar microservicios
-
-Ejecutar cada servicio en orden:
-```
-users-service
-products-service
-sales-service
-api-gateway
+spring.cloud.gateway.routes[0].id=users-service
+spring.cloud.gateway.routes[0].uri=http://localhost:8081
+spring.cloud.gateway.routes[0].predicates[0]=Path=/users/**
 ```
 
-Comando:
-```bash
+---
+
+## Microservicio Users Service
+
+Responsabilidades:
+
+- Crear usuarios
+- Autenticar usuarios
+- Listar usuarios
+- Obtener usuario por ID
+- Actualizar usuario
+- Eliminar usuario
+
+Endpoints disponibles:
+
+```
+POST /users
+POST /users/login
+GET /users
+GET /users/id/{id}
+PUT /users/{id}
+DELETE /users/{id}
+```
+
+Ejemplo de creación de usuario:
+
+```
+POST http://localhost:8080/users
+```
+
+Body:
+
+```
+{
+  "nombre": "Juan Perez",
+  "correo": "juan@gmail.com",
+  "password": "123456"
+}
+```
+
+---
+
+## Microservicio Products Service
+
+Responsabilidades:
+
+- Crear productos
+- Listar productos
+- Actualizar productos
+- Reducir stock
+- Eliminar productos
+
+Endpoints disponibles:
+
+```
+POST /products
+GET /products
+GET /products/{id}
+PUT /products/{id}
+PUT /products/{id}/stock?cantidad=1
+DELETE /products/{id}
+```
+
+Ejemplo de reducción de stock:
+
+```
+PUT http://localhost:8080/products/1/stock?cantidad=1
+```
+
+---
+
+## Microservicio Sales Service
+
+Responsabilidades:
+
+- Crear carrito
+- Agregar productos al carrito
+- Consultar carrito
+- Generar factura
+
+Endpoints disponibles:
+
+```
+POST /sales/cart?usuarioId=3
+POST /sales/cart/{cartId}/items
+GET /sales/cart/{cartId}
+POST /sales/invoice/{cartId}
+```
+
+Ejemplo de crear carrito:
+
+```
+POST http://localhost:8080/sales/cart?usuarioId=3
+```
+
+Ejemplo de agregar producto al carrito:
+
+```
+POST http://localhost:8080/sales/cart/7/items
+```
+
+Body:
+
+```
+{
+  "productoId": 1,
+  "cantidad": 1
+}
+```
+
+Ejemplo de generar factura:
+
+```
+POST http://localhost:8080/sales/invoice/7
+```
+
+---
+
+## Flujo Completo del Sistema
+
+El flujo funcional del sistema es el siguiente:
+
+1. Se crea un usuario
+2. Se crea un producto
+3. Se crea un carrito
+4. Se agrega un producto al carrito
+5. Se reduce el stock del producto
+6. Se genera la factura
+7. La factura se guarda en la base de datos
+
+Este flujo demuestra la comunicación entre múltiples microservicios dentro de una arquitectura distribuida.
+
+---
+
+## Ejecución del Proyecto
+
+Requisitos previos:
+
+- Java 17 instalado
+- Maven instalado
+- Docker instalado
+- Docker Desktop en ejecución
+
+---
+
+## Ejecución con Docker
+
+Paso 1:
+
+Abrir una terminal en la raíz del proyecto.
+
+Paso 2:
+
+Ejecutar el siguiente comando:
+
+```
+docker compose up -d
+```
+
+Paso 3:
+
+Verificar los contenedores:
+
+```
+docker ps
+```
+
+Debe mostrar:
+
+- api-gateway
+- users-service
+- products-service
+- sales-service
+- postgres
+
+---
+
+## Ejecución sin Docker
+
+Para ejecutar los microservicios manualmente desde Visual Studio Code:
+
+```
+cd users-service
 mvn spring-boot:run
 ```
 
-### 4. Ejecutar frontend
-
-Entrar a la carpeta `frontend-mvp` y ejecutar:
-```bash
-npm install
-ng serve
+```
+cd products-service
+mvn spring-boot:run
 ```
 
-Abrir en el navegador:
 ```
-http://localhost:4200
+cd sales-service
+mvn spring-boot:run
+```
+
+```
+cd api-gateway
+mvn spring-boot:run
 ```
 
 ---
 
-## 🔁 Flujo del Sistema
+## Verificación del Sistema
 
-1. El usuario accede al frontend
-2. El frontend envía solicitudes al API Gateway
-3. El Gateway redirige al microservicio correspondiente
-4. El microservicio procesa la solicitud (Create, Read, Update o Delete)
-5. Se guarda la información en PostgreSQL
-6. Se devuelve la respuesta al frontend
+Se realizaron pruebas funcionales utilizando Postman para validar el comportamiento de cada microservicio.
 
----
+Resultados de pruebas:
 
-## 📸 Evidencias sugeridas
-
-Agregar capturas de:
-- Usuarios creados, editados y eliminados
-- Productos creados, editados y eliminados
-- Carrito creado con items
-- Factura generada
-- Tablas en PostgreSQL
-- Frontend funcionando
+| Funcionalidad | Estado |
+|--------------|-------|
+| Crear usuario | Correcto |
+| Login usuario | Correcto |
+| Listar usuarios | Correcto |
+| Crear producto | Correcto |
+| Listar productos | Correcto |
+| Reducir stock | Correcto |
+| Crear carrito | Correcto |
+| Agregar item al carrito | Correcto |
+| Ver carrito | Correcto |
+| Generar factura | Correcto |
 
 ---
 
-## 👨‍💻 Autor
+## Ejemplo de Consulta SQL
 
-Proyecto académico — **Sistemas Distribuidos**
+Ver facturas generadas:
 
-**Estudiante:** Yeison Andres Scarpeta Diaz
-**Repositorio:** https://github.com/sparyock/mvp-carrito-microservices
+```
+SELECT * FROM facturas ORDER BY id DESC;
+```
+
+Ejemplo de resultado:
+
+| id | fecha | total | usuario_id |
+|----|------|------|-----------|
+| 4 | 2026-04-20 | 175 | 3 |
 
 ---
 
-## 📌 Estado del proyecto
+## Seguridad
 
-| Componente     | Estado       |
-|----------------|--------------|
-| Backend        | ✅ Completo  |
-| Frontend       | ✅ Completo  |
-| Integración    | ✅ Funcional |
-| Base de datos  | ✅ Operativa |
-| CRUD completo  | ✅ Implementado |
+Actualmente el sistema utiliza autenticación básica mediante correo y contraseña.
+
+Nota técnica:
+
+Las contraseñas se almacenan en texto plano únicamente con fines académicos. En un entorno de producción se recomienda utilizar algoritmos de hash como:
+
+- BCrypt
+- Argon2
+- PBKDF2
+
+---
+
+## Escalabilidad
+
+La arquitectura basada en microservicios permite:
+
+- Escalar servicios de forma independiente
+- Mantener separación de responsabilidades
+- Facilitar mantenimiento y despliegue
+- Permitir integración con nuevos servicios
+
+Ejemplo de servicios futuros:
+
+- Servicio de notificaciones
+- Servicio de pagos
+- Servicio de reportes
+- Servicio de autenticación con JWT
+
+---
+
+## Autor
+
+Proyecto desarrollado como parte del curso de Sistemas Distribuidos.
+
+Rol en el proyecto:
+
+Configuración de microservicios
+
+Configuración de bases de datos
+
+Implementación de Docker
+
+Pruebas funcionales del sistema
+
+Documentación técnica
+
+---
+
+## Estado del Proyecto
+
+El sistema se encuentra completamente funcional a nivel de MVP, permitiendo la ejecución de un flujo completo desde la creación de usuarios hasta la generación de facturas dentro de una arquitectura distribuida basada en microservicios.
+
