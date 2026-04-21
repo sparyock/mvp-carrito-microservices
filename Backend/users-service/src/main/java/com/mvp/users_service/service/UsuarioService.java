@@ -1,8 +1,6 @@
 package com.mvp.users_service.service;
 
-import com.mvp.users_service.exception.ResourceNotFoundException;
 import com.mvp.users_service.model.Usuario;
-import com.mvp.users_service.model.UsuarioDTO;
 import com.mvp.users_service.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,23 +15,8 @@ public class UsuarioService {
         this.repository = repository;
     }
 
-    public Usuario crearUsuario(UsuarioDTO dto) {
-        Usuario usuario = new Usuario();
-        usuario.setNombre(dto.getNombre());
-        usuario.setCorreo(dto.getCorreo());
-        usuario.setPassword(dto.getPassword()); // Nota: En producción, hashear la contraseña
+    public Usuario crearUsuario(Usuario usuario) {
         return repository.save(usuario);
-    }
-
-    public Usuario loginUsuario(String correo, String password) {
-        Usuario usuario = repository.findByCorreo(correo)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con correo: " + correo));
-
-        if (!usuario.getPassword().equals(password)) {
-            throw new IllegalArgumentException("Credenciales incorrectas");
-        }
-
-        return usuario;
     }
 
     public List<Usuario> listarUsuarios() {
@@ -41,7 +24,6 @@ public class UsuarioService {
     }
 
     public Usuario obtenerUsuario(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID: " + id));
+        return repository.findById(id).orElse(null);
     }
 }
