@@ -1,12 +1,9 @@
 package com.mvp.sales_service.controller;
 
-import com.mvp.sales_service.model.AgregarProductoDTO;
 import com.mvp.sales_service.model.Carrito;
 import com.mvp.sales_service.model.CarritoDetalle;
 import com.mvp.sales_service.model.Factura;
 import com.mvp.sales_service.service.SalesService;
-import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,26 +19,22 @@ public class SalesController {
     }
 
     @PostMapping("/cart")
-    public ResponseEntity<Carrito> crearCarrito(@RequestParam Long usuarioId) {
-        Carrito carrito = service.crearCarrito(usuarioId);
-        return ResponseEntity.ok(carrito);
+    public Carrito crearCarrito(@RequestBody Carrito carrito) {
+        return service.crearCarrito(carrito);
     }
 
     @PostMapping("/cart/{cartId}/items")
-    public ResponseEntity<CarritoDetalle> agregarProducto(@PathVariable Long cartId, @Valid @RequestBody AgregarProductoDTO dto) {
-        CarritoDetalle detalle = service.agregarProducto(cartId, dto);
-        return ResponseEntity.ok(detalle);
+    public CarritoDetalle agregarProducto(@PathVariable Long cartId, @RequestBody CarritoDetalle detalle) {
+        return service.agregarProducto(cartId, detalle);
     }
 
     @GetMapping("/cart/{cartId}")
-    public ResponseEntity<List<CarritoDetalle>> verCarrito(@PathVariable Long cartId) {
-        List<CarritoDetalle> detalles = service.verCarrito(cartId);
-        return ResponseEntity.ok(detalles);
+    public List<CarritoDetalle> verCarrito(@PathVariable Long cartId) {
+        return service.verCarrito(cartId);
     }
 
     @PostMapping("/invoice/{cartId}")
-    public ResponseEntity<Factura> generarFactura(@PathVariable Long cartId) {
-        Factura factura = service.generarFactura(cartId);
-        return ResponseEntity.ok(factura);
+    public Factura generarFactura(@PathVariable Long cartId) {
+        return service.generarFactura(cartId);
     }
 }
