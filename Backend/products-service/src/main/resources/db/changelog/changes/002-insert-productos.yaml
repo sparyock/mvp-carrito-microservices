@@ -1,0 +1,157 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-insert-productos
+      author: yeison
+
+      changes:
+        - insert:
+            tableName: productos
+            columns:
+              - column:
+                  name: nombre
+                  value: Reloj Inteligente Premium
+              - column:
+                  name: descripcion
+                  value: Reloj inteligente con pantalla AMOLED, monitor de ritmo cardíaco y resistencia al agua hasta 50m
+              - column:
+                  name: precio
+                  valueNumeric: 299.99
+              - column:
+                  name: stock
+                  valueNumeric: 15
+              - column:
+                  name: imagen_url
+                  value: https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop
+
+        - insert:
+            tableName: productos
+            columns:
+              - column:
+                  name: nombre
+                  value: Auriculares Inalámbricos Pro
+              - column:
+                  name: descripcion
+                  value: Auriculares con cancelación de ruido activa, batería de 30 horas y sonido de calidad estudio
+              - column:
+                  name: precio
+                  valueNumeric: 199.99
+              - column:
+                  name: stock
+                  valueNumeric: 25
+              - column:
+                  name: imagen_url
+                  value: https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop
+
+        - insert:
+            tableName: productos
+            columns:
+              - column:
+                  name: nombre
+                  value: Cámara Digital 4K
+              - column:
+                  name: descripcion
+                  value: Cámara digital compacta con zoom óptico 10x, grabación 4K y estabilización de imagen
+              - column:
+                  name: precio
+                  valueNumeric: 599.99
+              - column:
+                  name: stock
+                  valueNumeric: 8
+              - column:
+                  name: imagen_url
+                  value: https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=400&h=400&fit=crop
+
+        - insert:
+            tableName: productos
+            columns:
+              - column:
+                  name: nombre
+                  value: Tableta Gráfica XL
+              - column:
+                  name: descripcion
+                  value: Tableta gráfica profesional con 8192 niveles de presión y 16 botones programables
+              - column:
+                  name: precio
+                  valueNumeric: 449.99
+              - column:
+                  name: stock
+                  valueNumeric: 12
+              - column:
+                  name: imagen_url
+                  value: https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&h=400&fit=crop
+
+        - insert:
+            tableName: productos
+            columns:
+              - column:
+                  name: nombre
+                  value: Monitor Gaming Curvo
+              - column:
+                  name: descripcion
+                  value: Monitor curvo 27 pulgadas, 144Hz, 1ms tiempo de respuesta, ideal para gaming competitivo
+              - column:
+                  name: precio
+                  valueNumeric: 349.99
+              - column:
+                  name: stock
+                  valueNumeric: 20
+              - column:
+                  name: imagen_url
+                  value: https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400&h=400&fit=crop
+
+        - insert:
+            tableName: productos
+            columns:
+              - column:
+                  name: nombre
+                  value: Teclado Mecánico RGB
+              - column:
+                  name: descripcion
+                  value: Teclado mecánico con switches Cherry MX, iluminación RGB personalizable y reposamuñecas
+              - column:
+                  name: precio
+                  valueNumeric: 129.99
+              - column:
+                  name: stock
+                  valueNumeric: 35
+              - column:
+                  name: imagen_url
+                  value: https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=400&h=400&fit=crop
+
+        - insert:
+            tableName: productos
+            columns:
+              - column:
+                  name: nombre
+                  value: Mouse Gamer Inalámbrico
+              - column:
+                  name: descripcion
+                  value: Mouse gamer con sensor PMW3389, 16000 DPI y batería de 50 horas
+              - column:
+                  name: precio
+                  valueNumeric: 89.99
+              - column:
+                  name: stock
+                  valueNumeric: 40
+              - column:
+                  name: imagen_url
+                  value: https://images.unsplash.com/photo-1527814050087-3793815479db?w=400&h=400&fit=crop
+
+        - insert:
+            tableName: productos
+            columns:
+              - column:
+                  name: nombre
+                  value: Webcam 1080p HD
+              - column:
+                  name: descripcion
+                  value: Webcam Full HD con micrófono integrado, corrección automática de luz y campo de visión 90°
+              - column:
+                  name: precio
+                  valueNumeric: 79.99
+              - column:
+                  name: stock
+                  valueNumeric: 30
+              - column:
+                  name: imagen_url
+                  value: https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&h=400&fit=crop

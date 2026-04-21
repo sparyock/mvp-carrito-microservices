@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-create-facturas-table
+      author: yeison
+
+      changes:
+        - createTable:
+            tableName: facturas
+            columns:
+
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+
+              - column:
+                  name: carrito_id
+                  type: BIGINT
+
+              - column:
+                  name: total
+                  type: DOUBLE PRECISION
+
+              - column:
+                  name: fecha
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
