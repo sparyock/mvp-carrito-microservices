@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-create-detalle-factura-table
+      author: yeison
+
+      changes:
+        - createTable:
+            tableName: detalle_factura
+            columns:
+
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+
+              - column:
+                  name: factura_id
+                  type: BIGINT
+
+              - column:
+                  name: producto_id
+                  type: BIGINT
+
+              - column:
+                  name: cantidad
+                  type: INT
+
+              - column:
+                  name: precio
+                  type: DOUBLE PRECISION

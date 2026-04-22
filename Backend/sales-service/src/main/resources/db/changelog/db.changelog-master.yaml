@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/001-create-carritos-table.yaml
+
+  - include:
+      file: db/changelog/changes/002-create-carrito-detalle-table.yaml
+
+  - include:
+      file: db/changelog/changes/003-create-facturas-table.yaml
+
+  - include:
+      file: db/changelog/changes/004-create-detalle-factura-table.yaml
